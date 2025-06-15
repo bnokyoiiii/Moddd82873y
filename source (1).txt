@@ -463,6 +463,8 @@ function OrionLib:Init()
 	end	
 end	
 
+-- ✅ تم تعديل كود OrionLib لإظهار صورة (أيقونة) بجانب اسم الواجهة
+
 function OrionLib:MakeWindow(WindowConfig)
 	local FirstTab = true
 	local Minimized = false
@@ -492,6 +494,32 @@ function OrionLib:MakeWindow(WindowConfig)
 		end	
 	end
 
+	-- العنوان الأساسي
+	local WindowTitleLabel = AddThemeObject(SetProps(MakeElement("Label", WindowConfig.Name, 14), {
+		Size = UDim2.new(1, -60, 1, 0),
+		Position = UDim2.new(0, 25, 0, 15),
+		Font = Enum.Font.GothamBlack,
+		TextSize = 20,
+		Name = "WindowTitleLabel",
+		TextXAlignment = Enum.TextXAlignment.Left
+	}), "Text")
+
+	-- الأيقونة بجانب العنوان (على اليمين)
+	local WindowIcon
+	if WindowConfig.ShowIcon and WindowConfig.Icon then
+		WindowIcon = Instance.new("ImageLabel")
+		WindowIcon.Name = "WindowIcon"
+		WindowIcon.Size = UDim2.new(0, 20, 0, 20)
+		WindowIcon.Position = UDim2.new(0, 0, 0, 15)
+		WindowIcon.BackgroundTransparency = 1
+		WindowIcon.Image = WindowConfig.Icon
+		WindowIcon.ZIndex = WindowTitleLabel.ZIndex
+		WindowIcon.Parent = WindowTitleLabel.Parent
+		WindowIcon.AnchorPoint = Vector2.new(0, 0.5)
+		WindowIcon.Position = UDim2.new(0, 25, 0, 25)
+		WindowTitleLabel.Position = UDim2.new(0, 50, 0, 15)
+	end
+	
 	local TabHolder = AddThemeObject(SetChildren(SetProps(MakeElement("ScrollFrame", Color3.fromRGB(255, 255, 255), 4), {
 		Size = UDim2.new(1, 0, 1, -50)
 	}), {
